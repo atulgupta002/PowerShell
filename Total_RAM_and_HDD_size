@@ -1,0 +1,19 @@
+Function Windows-MemoryCheck
+{
+$RAM = (systeminfo | Select-String 'Total Physical Memory:').ToString().Split(':')[1].Trim()
+Write-Host "RAM: $RAM"
+$sum = 0
+#Edit the array to include all the drives present on your local computer. The number of drives is mostly standardized for an environment.
+$drives = @(
+"C:"
+"D:"
+"E:"
+"G:"
+)
+foreach($drive in $drives)
+{
+$diskSize = [int](Get-CimInstance win32_logicaldisk |where caption -eq $drive |  foreach-object {write " $(($_.Size/1gb))"})
+$total = $total + $diskSize
+}
+Write-Host "Total hard disk size: $total GB"
+}
