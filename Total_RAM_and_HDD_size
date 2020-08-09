@@ -8,7 +8,9 @@ $drives = @(
 "C:"
 "D:"
 "E:"
+"F:"
 "G:"
+"H:"
 )
 foreach($drive in $drives)
 {
