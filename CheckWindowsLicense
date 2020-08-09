@@ -1,0 +1,37 @@
+Function Windows-ActivationCheck
+{
+try
+{
+$licenseStatus = Get-CimInstance -ClassName SoftwareLicensingProduct | where PartialProductKey | select @{Name='LicenseStatus';Exp={switch ($_.LicenseStatus){
+
+0 {'Unlicensed'}
+
+1 {'licensed'}
+
+2 {'OOBGrace'}
+
+3 {'OOTGrace'}
+
+4 {'NonGenuineGrace'}
+
+5 {'Notification'}
+
+6 {'ExtendedGrace'}
+
+Default {'Undetected'}
+
+}
+}}
+if(($licenseStatus.LicenseStatus -eq 'licensed') -or ($licenseStatus.LicenseStatus -eq 'Licensed'))
+{
+Write-Host "Windows is licensed." -Foregroundcolor Green
+}
+else
+{
+Write-Host "Windows is not licensed/activated." -Foregroundcolor Red
+}}
+catch
+{
+Write-Host "ACTION REQUIRED: Windows license check failed." -Foregroundcolor Red
+}
+}
