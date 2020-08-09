@@ -1,0 +1,35 @@
+#function to compare timestamps and sizes of files with same names at two locations on a local computer. 
+Function Verify-Fileproperties
+{
+$files = @(
+##Enter file list##
+)
+$sourcePath = ""
+$destinationPath = ""
+Write-Host "Comparing timestamps."
+foreach($file in $files)
+{
+if((Get-Itemproperty $sourcePath\$file | Select-Object LastWriteTime) -eq (Get-Itemproperty $destinationPath\$file | Select-Object LastWriteTime))
+{
+write-host "Timestamp for $file match." -Foregroundcolor Green
+}
+else
+{
+write-Host "Timestamp for $file doesn't match or $file does not exist. Rectify this discrepancy." -Foregroundcolor Red
+Pause
+}
+}
+Write-Host "Checking filesizes."
+foreach($file in $files)
+{
+if((Get-Item $sourcePath\$file).length/1MB -eq (Get-Item $destinationPath\$file).length/1MB)
+{
+write-host "Filesize for $file match." -Foregroundcolor Green
+}
+else
+{
+write-Host "Filesize for $file don't match or $file does not exist. Rectify this discrepancy." -Foregroundcolor Red
+Pause
+}
+}
+}
