@@ -1,0 +1,14 @@
+#Checking if a particular software is installed
+Function Windows-SoftwareStatus
+{
+$displayName = "Software name"
+$softwareInstall = (Get-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" | 
+                    Where-Object { $_.DisplayName -match $displayName }).DisplayName
+if ($softwareInstall -eq $displayName)
+{
+Write-Host ("Software is installed.") -Foregroundcolor Green
+}
+else
+{
+Write-Host "Software is NOT installed." -Foregroundcolor Red
+}
