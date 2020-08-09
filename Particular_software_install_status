@@ -12,3 +12,4 @@ else
 {
 Write-Host "Software is NOT installed." -Foregroundcolor Red
 }
+}
