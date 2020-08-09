@@ -1,0 +1,24 @@
+Function File-DownloadAndCopy
+{
+$machines = Get-Content ListofMachines.txt
+$url = "" #Exact file URL
+$file = "" #destination file path on local computer
+Write-Host ""
+Write-Host "Downloading and copying file." -Foregroundcolor Green
+New-Item -Itemtype file -Name CopyResult.txt -Force | Out-Null
+Echo "Machine    `tCopyStatus " | Out-file CopyResult.txt
+Invoke-WebRequest -Uri $url -OutFile $file
+foreach ($machine in $machines)
+{ 
+try
+{
+Copy-Item -Path $file -Destination "\\$machine\#LocationOnRemoteMachine#" -recurse -force
+Echo "$machine `t$? " | Out-file CopyResult.txt -append 
+}
+catch
+{
+echo "$machine `tCannot Connect to Machine" | Out-file CopyResult.txt -append 
+}
+}
+Remove-Item $file -Force -ErrorAction SilentlyContinue #removes the file from local computer after copy operation is complete
+}
