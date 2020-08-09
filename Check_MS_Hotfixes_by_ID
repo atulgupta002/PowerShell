@@ -1,0 +1,17 @@
+Function Windows-MSHotfixStatus
+{
+$microsoftPatches = @(
+"##Enter hotfix ID##"
+)
+foreach($patch in $microsoftPatches)
+{
+if((Get-Hotfix -Id $patch -ErrorAction SilentlyContinue))
+{
+Write-Host "$patch found." -Foregroundcolor Green
+}
+else
+{
+Write-Host "$patch not found" -Foregroundcolor Red
+}
+}
+}
