@@ -32,6 +32,6 @@ Write-Host "Windows is not licensed/activated." -Foregroundcolor Red
 }}
 catch
 {
-Write-Host "ACTION REQUIRED: Windows license check failed." -Foregroundcolor Red
+Write-Host "Windows license check failed." -Foregroundcolor Red
 }
 }
