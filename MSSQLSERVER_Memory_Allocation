@@ -1,0 +1,26 @@
+Function SQL-MemoryAllocation
+{
+try
+{
+[reflection.assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo") | Out-Null
+$InstanceName = #Specify your SQL instance name
+$srv = New-Object Microsoft.SQLServer.Management.Smo.Server($InstanceName)
+$memory = $srv.Configuration.MaxServerMemory.RunValue
+$RAM = (systeminfo | Select-String 'Total Physical Memory:').ToString().Split(':')[1].Trim()
+$trimRAM = $RAM.Trim('MB')
+$intRAM = [int]$trimRAM
+$maxMemory = 0.8 * $intRAM
+if ($memory -le $maxMemory)
+{
+Write-Host ("SQL memory allocation is less than or equal to 80%.") -Foregroundcolor Green
+}
+else
+{
+Write-Host ("SQL memory allocation is more than 80%!") -Foregroundcolor Red
+}
+}
+catch
+{
+Write-Host ("SQL memory allocation check failed!") -Foregroundcolor Red
+}
+}
