@@ -1,0 +1,25 @@
+Function Windows-UACCheck
+{
+$LUAStatus = (New-Object -ComObject WScript.Shell).RegRead("HKLM\Software\Microsoft\Windows\CurrentVersion\policies\system\EnableLUA")
+if($LUAStatus -eq 0)
+{
+write-host("UAC is disabled")
+}
+if ($LUAStatus -ne 0){
+write-host("UAC is enabled! Disabling UAC temporarily...")
+Set-ItemProperty -Path "HKLM:Software\Microsoft\Windows\CurrentVersion\policies\system" -Name EnableLUA -Value 0 -Force
+if (-not $?)
+{
+write-host "Could not disable UAC through registry! Please update registry value manually." -Foregroundcolor Red
+Pause
+}
+#Restarting explorer.exe to temporarily disable UAC
+Stop-Process -ProcessName explorer -Force
+Start-Process -ProcessName explorer -Force
+if (-not $?)
+{
+write-host "Could not restart explorer! Please re-start the Explorer process from task manager." -Foregroundcolor Red
+Pause
+}
+}
+}
