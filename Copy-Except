@@ -1,0 +1,9 @@
+Function Copy-Except
+{
+$source = ""
+$destination = ""
+$exceptions = @(
+## Enter files to omit ##
+)
+Get-ChildItem $source -Exclude $exceptions| Copy-Item $_ $destination -Force -Recurse
+}
