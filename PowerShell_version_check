@@ -1,0 +1,15 @@
+#User defined function to check if local computer has minimum required PowerShell version
+Function PowerShell-VersionCheck
+{
+$versionCheck = $PSVersionTable.PSVersion.Major
+if ($versionCheck -lt 3)
+{
+Write-Host "Operation doesn't support this PowerShell version. Operation aborted." -Foregroundcolor Red
+sleep 10
+exit
+}
+else
+{
+Write-Host "PowerShell version verified." -Foregroundcolor Green
+}
+}
